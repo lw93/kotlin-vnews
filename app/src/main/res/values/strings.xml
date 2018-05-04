@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">vnews</string>
+    <array name="vnews_type">
+        <item>头条</item>
+        <item>要文</item>
+        <item>独家</item>
+        <item>科技</item>
+        <item>智能</item>
+        <item>娱乐</item>
+        <item>游戏</item>
+        <item>财经</item>
+        <item>汽车</item>
+        <item>体育</item>
+        <item>社会</item>
+        <item>军事</item>
+        <item>健康</item>
+        <item>旅游</item>
+        <item>女人</item>
+        <item>历史</item>
+        <item>电台</item>
+        <item>航空</item>
+        <item>影视歌</item>
+        <item>股票</item>
+        <item>彩票</item>
+        <item>手机</item>
+        <item>数码</item>
+        <item>轻松一刻</item>
+        <item>房产</item>
+        <item>家居</item>
+        <item>教育</item>
+        <item>时尚</item>
+        <item>政务</item>
+        <item>艺术</item>
+    </array>
+    <string name="no_more_data">没有更多数据</string>
+    <string name="load_list_more">点击加载更多</string>
+    <!--<string name="load_end">没有更多数据</string>-->
+    <string name="load_list_failed">加载失败，请点我重试</string>
+    <!--<string name="loading">正在加载中...</string>-->
+</resources>
