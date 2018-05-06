@@ -7,6 +7,7 @@ import com.xiuyuan.vnews.bean.VNewsItemVO
 import com.xiuyuan.vnews.model.impl.VNewsListModelImpl
 import com.xiuyuan.vnews.presenter.IVNewsListPresenter
 import com.xiuyuan.vnews.view.IVNewsListView
+import org.greenrobot.eventbus.EventBus
 
 /**
  * @author Created by xiuyaun
@@ -19,12 +20,12 @@ internal class VNewsListPresenterImpl constructor(view: BaseView?) : BasePresent
 
 
 
-    override fun getVNewsListPresenter(type : String?) {
+    override fun getVNewsListPresenter(type : String?,evenBus: EventBus?) {
         if (null != view){
             if (null == model){
                 model = VNewsListModelImpl()
             }
-            model ?.getVNewsListModel(type,object : BaseCallBack<List<VNewsItemVO>> {
+            model ?.getVNewsListModel(type,evenBus,object : BaseCallBack<List<VNewsItemVO>> {
                 override fun onSuccess(callback: List<VNewsItemVO>?) {
                     view?.onSuccess(callback)
                  }
@@ -39,12 +40,12 @@ internal class VNewsListPresenterImpl constructor(view: BaseView?) : BasePresent
             })
         }
     }
-    override fun getVNewsListMorePresenter(type: String?, pageNum: Int?) {
+    override fun getVNewsListMorePresenter(type: String?, pageNum: Int?,evenBus: EventBus?) {
         if (null != view){
             if (null == model){
                 model = VNewsListModelImpl()
             }
-            model ?.getVNewsListMoreModel(type,pageNum,object : BaseCallBack<List<VNewsItemVO>> {
+            model ?.getVNewsListMoreModel(type,pageNum,evenBus,object : BaseCallBack<List<VNewsItemVO>> {
                 override fun onSuccess(callback: List<VNewsItemVO>?) {
                     view?.updateRecyclerView(callback)
                 }

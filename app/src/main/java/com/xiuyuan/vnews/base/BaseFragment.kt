@@ -1,5 +1,6 @@
 package com.xiuyuan.vnews.base
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.support.annotation.LayoutRes
@@ -15,14 +16,10 @@ import com.xiuyuan.vnews.utils.ToastUtil
  */
 abstract class BaseFragment<P: BasePresenter>: Fragment() {
     protected var presenter: P? = null
-    protected var mContext: Context? = null
+    protected var mContext: Activity? = null
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context != null) {
-            mContext = context
-        } else {
             mContext = activity
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

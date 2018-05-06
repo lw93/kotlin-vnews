@@ -24,7 +24,7 @@
 
         <activity android:name=".activity.MainActivity" android:theme="@style/NoActionBarTheme"/>
         <activity android:name=".activity.DetailActivity"/>
-
+        <service android:name=".service.ClearCacheService"/>
     </application>
 
 </manifest>

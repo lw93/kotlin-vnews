@@ -3,6 +3,7 @@ package com.xiuyuan.vnews.adapter
 import android.os.Build
 import android.view.View
 import android.widget.ImageView
+import com.blankj.utilcode.util.StringUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -41,7 +42,7 @@ internal class VNewsListAdapter: BaseMultiItemQuickAdapter<VNewsItemVO, BaseView
                     helper.getView<View>(R.id.list_item_rl).setBackgroundDrawable(null)
                 }
                 helper.setText(R.id.list_item_title,item.getTitle())
-                helper.setText(R.id.list_item_content,item.getShortContent())
+                helper.setText(R.id.list_item_content,StringUtils.toDBC(item.getShortContent()))
                 helper.setText(R.id.list_item_editor,item.getEditor())
                 helper.setText(R.id.list_item_resouce,item.getResouce())
             }

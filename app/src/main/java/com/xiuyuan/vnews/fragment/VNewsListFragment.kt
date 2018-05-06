@@ -13,12 +13,16 @@ import com.xiuyuan.vnews.R
 import com.xiuyuan.vnews.activity.DetailActivity
 import com.xiuyuan.vnews.adapter.VNewsListAdapter
 import com.xiuyuan.vnews.base.BaseFragment
+import com.xiuyuan.vnews.bean.MessageEvent
 import com.xiuyuan.vnews.bean.VNewsItemVO
 import com.xiuyuan.vnews.presenter.impl.VNewsListPresenterImpl
 import com.xiuyuan.vnews.utils.ToastUtil
 import com.xiuyuan.vnews.utils.VNewsUtil
 import com.xiuyuan.vnews.view.IVNewsListView
 import kotlinx.android.synthetic.main.fragment_list.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 /**
@@ -31,23 +35,27 @@ internal class VNewsListFragment:BaseFragment<VNewsListPresenterImpl>(),IVNewsLi
     private lateinit var list:List<VNewsItemVO>
     private lateinit var recyclerviewAdapter:VNewsListAdapter
     private var type:String? = null
+    private var evenBus: EventBus? = null
 
     companion object {
-        val FRAGMENT_TYPE_PARME = "FRAGMENT_TYPE_PARME"
-        val FRAGMENT_ITEM_TITLE = "FRAGMENT_ITEM_TITLE"
-        val FRAGMENT_ITEM_BODYID = "FRAGMENT_ITEM_BODYID"
-        val TAG = VNewsListFragment::class.java.simpleName
-        fun newInstance(param:String): VNewsListFragment {
-            var fragment = VNewsListFragment()
-            var args = Bundle()
-            args.putString(FRAGMENT_TYPE_PARME, param)
-            fragment.setArguments(args)
-            return fragment
-        }
-    }
-
+         val FRAGMENT_TYPE_PARME = "FRAGMENT_TYPE_PARME"
+         val FRAGMENT_ITEM_TITLE = "FRAGMENT_ITEM_TITLE"
+         val FRAGMENT_ITEM_BODYID = "FRAGMENT_ITEM_BODYID"
+         val TAG = VNewsListFragment::class.java.simpleName
+         fun newInstance(param:String): VNewsListFragment {
+             var fragment = VNewsListFragment()
+             var args = Bundle()
+             args.putString(FRAGMENT_TYPE_PARME, param)
+             fragment.setArguments(args)
+             return fragment
+         }
+     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        evenBus = EventBus()
+        if (!(evenBus?.isRegistered(this))!!) {
+            evenBus?.register(this)
+        }
         list = ArrayList<VNewsItemVO>()
         recyclerviewAdapter =   VNewsListAdapter(list)
         recyclerviewAdapter.openLoadAnimation()
@@ -115,9 +123,28 @@ internal class VNewsListFragment:BaseFragment<VNewsListPresenterImpl>(),IVNewsLi
     }
     private fun clearAll(){
         type = null
+        if (null != evenBus){
+            evenBus?.unregister(this)
+            evenBus = null
+        }
     }
     override fun onDetach() {
         super.onDetach()
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvenBus(messageEvent: MessageEvent){
+        when(messageEvent.getIndex()){
+            0->{
+                    onSuccess(messageEvent.getMessage())
+                    releaseView()
+                    onFailed(messageEvent.getTxt())
+            }
+            1->{
+                    updateRecyclerView(messageEvent.getMessage())
+                    releaseView()
+                    onFailed(messageEvent.getTxt())
+            }
+        }
     }
 
     //下拉刷新
@@ -127,7 +154,7 @@ internal class VNewsListFragment:BaseFragment<VNewsListPresenterImpl>(),IVNewsLi
         pageNum = 1
         recyclerview.postDelayed(object : Runnable{
             override fun run() {
-                presenter?.getVNewsListPresenter(type)
+                presenter?.getVNewsListPresenter(type,evenBus)
             }
         },1000)
     }
@@ -136,7 +163,7 @@ internal class VNewsListFragment:BaseFragment<VNewsListPresenterImpl>(),IVNewsLi
         Log.d(TAG,"点击了OnLoadMoreListene")
         pageNum++
         //var type = arguments?.getString(FRAGMENT_TYPE_PARME)
-        presenter?.getVNewsListMorePresenter(type,pageNum)
+        presenter?.getVNewsListMorePresenter(type,pageNum,evenBus)
     }
 
     override fun onFailed(message: String?) {
@@ -200,6 +227,6 @@ internal class VNewsListFragment:BaseFragment<VNewsListPresenterImpl>(),IVNewsLi
     //点击空数据时相关操作
     override fun onClick(v: View?) {
         Log.d(TAG,"点击了空视图")
-        presenter?.getVNewsListPresenter(type)
+        presenter?.getVNewsListPresenter(type,evenBus)
     }
 }

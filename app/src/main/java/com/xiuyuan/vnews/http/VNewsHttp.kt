@@ -6,6 +6,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.LinkedBlockingDeque
+import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
 
@@ -25,6 +28,9 @@ open class VNewsHttp {
     private val url = createUrl()
     companion object {
         val TAG = VNewsHttp::class.java.simpleName
+        private var CPU_COUNT = Runtime.getRuntime().availableProcessors()
+        var pool = ThreadPoolExecutor(1, CPU_COUNT,
+                1, TimeUnit.SECONDS, ArrayBlockingQueue(128))
         val INSTANCE: VNewsHttp = SingleTon.INSTANCE
     }
 
@@ -46,6 +52,9 @@ open class VNewsHttp {
                 }
             }
         }
+    }
+    fun createRetrofit(): Retrofit?{
+        return retrofit
     }
     fun createApi(): VNewsApi? {
         return retrofit?.create(VNewsApi::class.java)

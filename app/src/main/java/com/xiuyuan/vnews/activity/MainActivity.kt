@@ -8,13 +8,13 @@ import com.xiuyuan.vnews.adapter.FragmentAdapter
 import com.xiuyuan.vnews.adapter.IndicatorNavigatorAdapter
 import com.xiuyuan.vnews.base.BaseActivity
 import com.xiuyuan.vnews.base.BasePresenter
-import com.xiuyuan.vnews.bean.VNewsItemVO
+import com.xiuyuan.vnews.bean.MessageEvent
 import com.xiuyuan.vnews.fragment.VNewsListFragment
-import com.xiuyuan.vnews.presenter.impl.VNewsListPresenterImpl
-import com.xiuyuan.vnews.view.IVNewsListView
 import kotlinx.android.synthetic.main.activity_main.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 class MainActivity : BaseActivity<BasePresenter>() {
 
@@ -45,5 +45,11 @@ class MainActivity : BaseActivity<BasePresenter>() {
         mCommonNavigator.adapter  = IndicatorNavigatorAdapter(view_pager, titles.toList())
         magic_indicator.navigator = mCommonNavigator
         ViewPagerHelper.bind(magic_indicator, view_pager)
+    }
+
+
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

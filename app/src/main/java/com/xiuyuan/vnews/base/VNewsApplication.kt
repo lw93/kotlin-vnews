@@ -14,6 +14,8 @@ import com.blankj.utilcode.util.ToastUtils
 import com.squareup.leakcanary.LeakCanary
 import com.xiuyuan.vnews.BuildConfig
 import com.xiuyuan.vnews.db.GreenDaoHelper
+import com.xiuyuan.vnews.service.ClearCacheService
+import com.xiuyuan.vnews.utils.ScheduleUtil
 import com.xiuyuan.vnews.utils.VNewsUtil
 import org.greenrobot.eventbus.EventBus
 
@@ -46,13 +48,13 @@ open class VNewsApplication : Application(),CrashUtils.OnCrashListener {
                 .installDefaultEventBus()
         vNewsHttp = VNewsHttp.INSTANCE
         GreenDaoHelper.initDatabase()
+        ScheduleUtil.startScheduleService(this, ClearCacheService::class.java,ScheduleUtil.ACTION)
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
             return;
         }
         LeakCanary.install(this);
-
     }
 
     override fun onCrash(crashInfo: String?, e: Throwable?) {
@@ -93,5 +95,6 @@ open class VNewsApplication : Application(),CrashUtils.OnCrashListener {
         }else if (null != vNewsContext){
             vNewsContext = null
         }
+        ScheduleUtil.stopScheduleService(this,ClearCacheService::class.java,ScheduleUtil.ACTION)
     }
 }

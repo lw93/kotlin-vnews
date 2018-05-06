@@ -11,6 +11,7 @@ import com.xiuyuan.vnews.db.GreenDaoHelper
 import com.xiuyuan.vnews.dto.ReqVNewsItem
 import com.xiuyuan.vnews.dto.VNewsDTO
 import com.xiuyuan.vnews.http.ExceptionHandle
+import com.xiuyuan.vnews.http.VNewsHttp
 import com.xiuyuan.vnews.model.IVNewsBodyModel
 import com.xiuyuan.vnews.utils.VNewsUtil
 import greendao.VNewsEntityDao
@@ -36,7 +37,7 @@ internal class VNewsBodyModelImpl : IVNewsBodyModel{
         Log.d(TAG, "vNewsHttp init "+ (http !=null).toString())
         Log.d(TAG, "ReqVNewsItem "+ param.toString())
         http?.getVNewsBody(param)
-                ?.subscribeOn(Schedulers.newThread())
+                ?.subscribeOn(Schedulers.from(VNewsHttp.pool))
                 ?.doOnNext(object : Consumer<VNewsDTO<VNewsItemBodyVO>> {
                     override fun accept(t: VNewsDTO<VNewsItemBodyVO>) {
                         Log.d(TAG, "Consumer init " + Thread.currentThread().name)
