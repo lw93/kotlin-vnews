@@ -1,13 +1,11 @@
 package com.xiuyuan.vnews.http
 
-import android.util.Log
 import com.xiuyuan.vnews.api.VNewsApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.ArrayBlockingQueue
-import java.util.concurrent.LinkedBlockingDeque
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
@@ -53,9 +51,7 @@ open class VNewsHttp {
             }
         }
     }
-    fun createRetrofit(): Retrofit?{
-        return retrofit
-    }
+
     fun createApi(): VNewsApi? {
         return retrofit?.create(VNewsApi::class.java)
     }

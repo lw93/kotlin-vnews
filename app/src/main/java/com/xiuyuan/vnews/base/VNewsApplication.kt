@@ -4,16 +4,16 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.os.Handler
-import android.util.Log
-import com.blankj.utilcode.util.CrashUtils
-import com.blankj.utilcode.util.Utils
-import com.xiuyuan.vnews.http.VNewsHttp
 import android.support.multidex.MultiDex
+import android.util.Log
 import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.CrashUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.blankj.utilcode.util.Utils
 import com.squareup.leakcanary.LeakCanary
 import com.xiuyuan.vnews.BuildConfig
 import com.xiuyuan.vnews.db.GreenDaoHelper
+import com.xiuyuan.vnews.http.VNewsHttp
 import com.xiuyuan.vnews.service.ClearCacheService
 import com.xiuyuan.vnews.utils.ScheduleUtil
 import com.xiuyuan.vnews.utils.VNewsUtil
@@ -90,11 +90,15 @@ open class VNewsApplication : Application(),CrashUtils.OnCrashListener {
     }
 
     private fun clearAll(){
+        ScheduleUtil.stopScheduleService(this,ClearCacheService::class.java,ScheduleUtil.ACTION)
         if (null != vNewsHttp) {
             vNewsHttp = null
-        }else if (null != vNewsContext){
+        }
+        if (null != vNewsContext){
             vNewsContext = null
         }
-        ScheduleUtil.stopScheduleService(this,ClearCacheService::class.java,ScheduleUtil.ACTION)
+        if (null != VNewsHttp.pool && !VNewsHttp.pool.isShutdown){
+            VNewsHttp.pool.shutdown()
+        }
     }
 }
