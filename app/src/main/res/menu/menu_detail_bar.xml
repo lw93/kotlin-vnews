@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/share_action"
-        android:icon="@drawable/ic_share_32"
+        android:icon="@drawable/ic_share"
         android:title="share"
         app:showAsAction="always" />
 
