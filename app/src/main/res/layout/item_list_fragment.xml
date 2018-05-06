@@ -42,8 +42,9 @@
             android:ellipsize="end"
             android:maxLines="3"
             android:paddingRight="@dimen/dp_4"
+            android:paddingTop="@dimen/dp_4"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp_10" />
+            android:textSize="@dimen/sp_12" />
 
         <TextView
             android:id="@+id/list_item_editor"
@@ -52,7 +53,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp_12" />
+            android:textSize="@dimen/sp_10" />
 
         <TextView
             android:id="@+id/list_item_resouce"
@@ -63,7 +64,7 @@
             android:gravity="center|right"
             android:paddingRight="@dimen/dp_4"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp_12" />
+            android:textSize="@dimen/sp_10" />
     </RelativeLayout>
 
 </LinearLayout>
