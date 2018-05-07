@@ -1,7 +1,10 @@
 package com.xiuyuan.vnews.base
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.xiuyuan.vnews.R
 import com.xiuyuan.vnews.utils.ToastUtil
 import org.greenrobot.eventbus.EventBus
 
